@@ -23,7 +23,7 @@ class TSCarbon {
 	/**
 	 *
 	 */
-	public function crb_load() {
+	public static function crb_load() {
 		Carbon_Fields::boot();
 	}
 
@@ -31,7 +31,7 @@ class TSCarbon {
 	/**
 	 * Add Theme Options
 	 */
-	public function add_theme_options() {
+	public static function add_theme_options() {
 		Container::make( 'theme_options', __( 'Theme Options' ) )
 		         ->add_fields( array(
 			         Field::make( 'text', 'crb_text', 'Text Field' ),
@@ -41,7 +41,7 @@ class TSCarbon {
 	/**
 	 * Add Nav Menu item
 	 */
-	public function add_nav_menu_item() {
+	public static function add_nav_menu_item() {
 		Container::make( 'nav_menu_item', __( 'Menu Settings' ) )
 		         ->add_fields( array(
 			         Field::make( 'color', 'crb_color', __( 'Color' ) ),
@@ -51,7 +51,7 @@ class TSCarbon {
 	/**
 	 * Add Post meta
 	 */
-	public function add_post_meta() {
+	public static function add_post_meta() {
 		Container::make( 'post_meta', __( 'Homepage Settings' ) )
 		         ->where( 'post_type', '=', 'page' )
 		         ->where( 'post_template', '=', 'templates/main-page.php' )

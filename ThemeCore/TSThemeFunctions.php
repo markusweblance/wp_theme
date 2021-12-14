@@ -58,7 +58,7 @@ class TSThemeFunctions {
 		imagewebp($image, $uploads['basedir'] . '/' . $metadata['file'] . '.webp', 90); // сохраняет файл в webp
 
 		foreach ($metadata['sizes'] as $size) { // перебирает все размеры файла и также сохраняет в webp
-			$file = $uploads['url'] . '/' . $size['file'];
+			$file = $uploads['basedir'] . $uploads['subdir'] . '/' . $size['file'];
 			$ext = $size['mime-type'];
 
 			if ( $ext == 'image/jpeg' ) {

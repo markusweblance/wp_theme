@@ -19,7 +19,7 @@ class TSThemeSupport {
 	}
 
 
-	public function theme_support() {
+	public static function theme_support() {
 		add_theme_support( 'html5', array(
 			'search-form',
 			'comment-form',
@@ -43,7 +43,7 @@ class TSThemeSupport {
 		add_editor_style( 'assets/stylesheets/editor.css' );
 	}
 
-	public function enqueue_styles() {
+	public static function enqueue_styles() {
 		wp_enqueue_style( 'ts-style', get_stylesheet_uri() );
 		foreach ( self::$styles as $style ) {
 			if ( $style['cdn'] ) {
@@ -61,7 +61,7 @@ class TSThemeSupport {
 	}
 
 
-	public function enqueue_scripts() {
+	public static function enqueue_scripts() {
 		foreach ( self::$scripts as $script ) {
 			if ( $script['cdn'] ) {
 				wp_enqueue_script( $script['name'], $script['path'], $script['array'], null, $script['in_footer'] );
