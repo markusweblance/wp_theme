@@ -54,7 +54,10 @@ class TSThemeFunctions {
 			imagealphablending($image, false); // выключает режим сопряжения цветов
 			imagesavealpha($image, true); // сохраняет прозрачность
 
-		}
+		} else {
+		    return $metadata;
+        }
+		
 		imagewebp($image, $uploads['basedir'] . '/' . $metadata['file'] . '.webp', 90); // сохраняет файл в webp
 
 		foreach ($metadata['sizes'] as $size) { // перебирает все размеры файла и также сохраняет в webp
