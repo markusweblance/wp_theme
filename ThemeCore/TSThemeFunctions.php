@@ -11,6 +11,7 @@ class TSThemeFunctions {
 	public static function start() {
 		add_action( 'admin_init', [ static::Class, 'disable_content_editor' ] );
 		add_filter('wp_generate_attachment_metadata', [ static::Class, 'gt_webp_generation' ]);
+		add_action( 'delete_attachment', [ static::Class, 'del_webp_generation' ], 10, 2 );
 	}
 
 
@@ -79,6 +80,30 @@ class TSThemeFunctions {
 		}
 
 		return $metadata;
+	}
+
+	/**
+     * Удаление сгенерированных файлов webp
+	 * @param $post_id
+	 * @param $post
+	 */
+	public static function del_webp_generation( $post_id, $post ) {
+		$uploads = wp_upload_dir();
+		$file = get_attached_file( $post_id );
+		wp_delete_file_from_directory( $file . '.webp', $uploads['basedir'] );
+		$metadata = wp_get_attachment_metadata($post_id);
+		$intermediate_dir = path_join( $uploads['basedir'], dirname( $file ) );
+		foreach ( $metadata['sizes'] as $size => $sizeinfo  ) {
+			$intermediate_file = str_replace( wp_basename( $file ), $sizeinfo['file'], $file );
+
+			if ( ! empty( $intermediate_file ) ) {
+				$intermediate_file = path_join( $uploads['basedir'], $intermediate_file );
+
+				if ( ! wp_delete_file_from_directory( $intermediate_file . '.webp', $intermediate_dir ) ) {
+					$deleted = false;
+				}
+			}
+        }
 	}
 
 
