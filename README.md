@@ -16,7 +16,7 @@ npm start
 #styles
 npm run styles
 #images
-npm tun images
+npm run images
 #fonts
 npm run fonts
 ```
