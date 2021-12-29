@@ -61,6 +61,9 @@ const cache = require('gulp-cache'); // Cache files in stream for later use.
 const remember = require('gulp-remember'); //  Adds all the files it has ever seen back into the stream.
 const plumber = require('gulp-plumber'); // Prevent pipe breaking caused by errors from gulp plugins.
 const beep = require('beepbeep');
+const newer = require('gulp-newer');
+const gutil = require( 'gulp-util' );
+const ftp = require( 'vinyl-ftp' );
 
 //Fonts
 const ttf2woff = require('gulp-ttf2woff');
@@ -89,6 +92,7 @@ const errorHandler = r => {
 const browsersync = done => {
 	browserSync.init({
 		proxy: config.projectURL,
+		reloadDelay: 1000,
 		open: config.browserAutoOpen,
 		injectChanges: config.injectChanges,
 		watchEvents: ['change', 'add', 'unlink', 'addDir', 'unlinkDir']
@@ -136,13 +140,7 @@ gulp.task('styles', () => {
 		.pipe(lineec()) // Consistent Line Endings for non UNIX systems.
 		.pipe(gulp.dest(config.styleDestination))
 		.pipe(filter('**/*.css')) // Filtering stream to only css files.
-		.pipe(browserSync.stream()) // Reloads style.min.css if that is enqueued.
-		.pipe(
-			notify({
-				message: '\n\n✅  ===> STYLES — completed!\n',
-				onLast: true
-			})
-		);
+		.pipe(browserSync.stream());
 });
 
 
@@ -176,13 +174,7 @@ gulp.task('customJS', () => {
 		.pipe(remember(config.jsCustomSRC)) // Bring all files back to stream.
 		.pipe(concat(config.jsCustomFile + '.js'))
 		.pipe(lineec()) // Consistent Line Endings for non UNIX systems.
-		.pipe(gulp.dest(config.jsCustomDestination))
-		.pipe(
-			notify({
-				message: '\n\n✅  ===> CUSTOM JS — completed!\n',
-				onLast: true
-			})
-		);
+		.pipe(gulp.dest(config.jsCustomDestination));
 });
 
 /**
@@ -204,13 +196,15 @@ gulp.task('customJS', () => {
 gulp.task('images', () => {
 	return gulp
 		.src(config.imgSRC)
+		.pipe(newer(config.imgDST))
 		.pipe(
 			webp({
-				quality: 70
+				quality: 90
 			})
 		)
 		.pipe(gulp.dest(config.imgDST))
 		.pipe(gulp.src(config.imgSRC))
+		.pipe(newer(config.imgDST))
 		.pipe(
 			cache(
 				imagemin({
@@ -221,13 +215,7 @@ gulp.task('images', () => {
 				})
 			)
 		)
-		.pipe(gulp.dest(config.imgDST))
-		.pipe(
-			notify({
-				message: '\n\n✅  ===> IMAGES — completed!\n',
-				onLast: true
-			})
-		);
+		.pipe(gulp.dest(config.imgDST));
 });
 
 /**
@@ -262,13 +250,7 @@ gulp.task('translate', () => {
 				team: config.team
 			})
 		)
-		.pipe(gulp.dest(config.translationDestination + '/' + config.translationFile))
-		.pipe(
-			notify({
-				message: '\n\n✅  ===> TRANSLATE — completed!\n',
-				onLast: true
-			})
-		);
+		.pipe(gulp.dest(config.translationDestination + '/' + config.translationFile));
 });
 
 /**
@@ -281,14 +263,32 @@ gulp.task('fonts', () => {
 		.pipe(gulp.dest(config.destFonts))
 		.pipe(gulp.src(config.srcFonts))
 		.pipe(ttf2woff2())
-		.pipe(gulp.dest(config.destFonts))
-		.pipe(
-			notify({
-				message: '\n\n✅  ===> FONTS — completed!\n',
-				onLast: true
-			})
-		);
+		.pipe(gulp.dest(config.destFonts));
 })
+
+
+gulp.task( 'deploy', function () {
+
+	const conn = ftp.create( {
+		host:     'aipin.ru',
+		user:     'aipin_dev',
+		password: '1F4g2R8d',
+		parallel: 5,
+		log:      gutil.log
+	} );
+
+	const globs = [
+		'../assets/css/style.css'
+	];
+
+	// using base = '.' will transfer everything to /public_html correctly
+	// turn off buffering in gulp.src for best performance
+
+	return gulp.src( globs, { base: '.', buffer: true } )
+		.pipe( conn.dest( '/www/aipin.ru/wp-content/themes/aipin_theme/assets' ) );
+
+} );
+
 
 /**
  * Watch Tasks.
@@ -297,10 +297,10 @@ gulp.task('fonts', () => {
  */
 gulp.task(
 	'default',
-	gulp.parallel('styles', 'customJS', 'images', 'fonts', browsersync, () => {
+	gulp.parallel('styles', 'customJS', 'images', browsersync, () => {
 		gulp.watch(config.watchPhp, reload); // Reload on PHP file changes.
-		gulp.watch(config.watchStyles, gulp.parallel('styles')); // Reload on SCSS file changes.
+		gulp.watch(config.watchStyles, gulp.series('styles', 'deploy', reload)); // Reload on SCSS file changes.
 		gulp.watch(config.watchJsCustom, gulp.series('customJS', reload)); // Reload on customJS file changes.
-		gulp.watch(config.imgSRC, gulp.series('images', reload)); // Reload on customJS file changes.
+		gulp.watch(config.imgSRC, gulp.series('images', reload));
 	})
 );
