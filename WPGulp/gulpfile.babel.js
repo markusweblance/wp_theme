@@ -267,29 +267,6 @@ gulp.task('fonts', () => {
 })
 
 
-gulp.task( 'deploy', function () {
-
-	const conn = ftp.create( {
-		host:     'aipin.ru',
-		user:     'aipin_dev',
-		password: '1F4g2R8d',
-		parallel: 5,
-		log:      gutil.log
-	} );
-
-	const globs = [
-		'../assets/css/style.css'
-	];
-
-	// using base = '.' will transfer everything to /public_html correctly
-	// turn off buffering in gulp.src for best performance
-
-	return gulp.src( globs, { base: '.', buffer: true } )
-		.pipe( conn.dest( '/www/aipin.ru/wp-content/themes/aipin_theme/assets' ) );
-
-} );
-
-
 /**
  * Watch Tasks.
  *
@@ -299,7 +276,7 @@ gulp.task(
 	'default',
 	gulp.parallel('styles', 'customJS', 'images', browsersync, () => {
 		gulp.watch(config.watchPhp, reload); // Reload on PHP file changes.
-		gulp.watch(config.watchStyles, gulp.series('styles', 'deploy', reload)); // Reload on SCSS file changes.
+		gulp.watch(config.watchStyles, gulp.series('styles')); // Reload on SCSS file changes.
 		gulp.watch(config.watchJsCustom, gulp.series('customJS', reload)); // Reload on customJS file changes.
 		gulp.watch(config.imgSRC, gulp.series('images', reload));
 	})
