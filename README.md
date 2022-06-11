@@ -13,10 +13,7 @@ npm i
 ```bash
 #start
 npm start
-#styles
-npm run styles
-#images
-npm run images
+
 #fonts
 npm run fonts
 ```
