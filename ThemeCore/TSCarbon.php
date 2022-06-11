@@ -14,10 +14,10 @@ class TSCarbon {
 	 *
 	 */
 	public static function addCarbon() {
-		add_action( 'after_setup_theme', [ static::Class, 'crb_load' ] );
-		add_action( 'carbon_fields_register_fields', [ static::Class, 'add_theme_options' ] );
+		add_action( 'after_setup_theme', [ static::class, 'crb_load' ] );
+		add_action( 'carbon_fields_register_fields', [ static::class, 'add_theme_options' ] );
 		//add_action( 'carbon_fields_register_fields', [ static::Class,'add_nav_menu_item'] );
-		add_action( 'carbon_fields_register_fields', [ static::Class, 'add_post_meta' ] );
+		add_action( 'carbon_fields_register_fields', [ static::class, 'add_post_meta' ] );
 	}
 
 	/**

@@ -1,13 +1,21 @@
-@mixin font($font_name, $file_name, $weight, $style) {
-
-	@font-face {
-		font-family: $font_name;
-		font-display: swap;
-		src: url("../fonts/#{$file_name}.woff") format("woff"), url("../fonts/#{$file_name}.woff2") format("woff2");
-		font-weight: #{$weight};
-		font-style: #{$style};
-	}
+@font-face{
+	font-family: BriosoPro;
+	font-display: swap;
+	src: url("../fonts/BriosoPro-italic.woff2") format("woff2"), url("../fonts/BriosoPro-italic.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
 }
-
-@include font("OpenSans", "OpenSans-Bold", "700", "normal");
-@include font("OpenSans", "OpenSans-Regular", "400", "normal");
+@font-face{
+	font-family: Oswald;
+	font-display: swap;
+	src: url("../fonts/Oswald-Bold.woff2") format("woff2"), url("../fonts/Oswald-Bold.woff") format("woff");
+	font-weight: 700;
+	font-style: normal;
+}
+@font-face{
+	font-family: Oswald;
+	font-display: swap;
+	src: url("../fonts/Oswald-Regular.woff2") format("woff2"), url("../fonts/Oswald-Regular.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+}

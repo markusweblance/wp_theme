@@ -13,9 +13,9 @@ class TSThemeSupport {
 
 
 	public static function addThemeSupport() {
-		add_action( 'after_setup_theme', [ static::Class, 'theme_support' ] );
-		add_action( 'wp_enqueue_scripts', [ static::Class, 'enqueue_styles' ] );
-		add_action( 'wp_enqueue_scripts', [ static::Class, 'enqueue_scripts' ] );
+		add_action( 'after_setup_theme', [ static::class, 'theme_support' ] );
+		add_action( 'wp_enqueue_scripts', [ static::class, 'enqueue_styles' ] );
+		add_action( 'wp_enqueue_scripts', [ static::class, 'enqueue_scripts' ] );
 	}
 
 

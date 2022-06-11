@@ -5,6 +5,7 @@ require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 use TSTheme\TSThemeSupport;
 use TSTheme\TSCarbon;
 use TSTheme\TSThemeFunctions;
+use TSTheme\TSImageWebp;
 use TSTheme\TSWoo;
 use TSTheme\TSBreadcrumbs;
 
@@ -42,8 +43,8 @@ TSThemeSupport::$scripts = [
 	],
 	[
 		'cdn'       => false,
-		'name'      => 'script',
-		'path'      => '/assets/js/scripts.js',
+		'name'      => 'app',
+		'path'      => '/assets/js/app.js',
 		'array'     => [ 'jquery' ],
 		'in_footer' => true,
 	],
@@ -78,7 +79,7 @@ TSThemeSupport::register_menu( [
 /**
  * Theme Functions
  */
-TSThemeFunctions::start();
+TSImageWebp::start();
 
 /**
  * Disable Content Editor
@@ -101,4 +102,9 @@ function wpt_breadcrumbs(){
 /**
  * Add WooFunction
  */
-TSWoo::start();
+//TSWoo::start();
+
+/**
+ * Create image WebP
+ */
+TSImageWebp::start();

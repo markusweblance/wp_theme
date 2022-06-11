@@ -56,7 +56,7 @@ class TSWalker extends \Walker_Nav_Menu {
 		 */
 		$args = apply_filters( 'nav_menu_item_args', $args, $item, $depth );
 
-		/**
+		/**	
 		 * Filters the CSS classes applied to a menu item's list item element.
 		 *
 		 * @param string[] $classes Array of the CSS classes that are applied to the menu item's `<li>` element.

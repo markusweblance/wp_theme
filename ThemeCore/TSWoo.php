@@ -11,9 +11,9 @@ class TSWoo {
 			'woocommerce/woocommerce.php',
 			apply_filters( 'active_plugins',
 				get_option( 'active_plugins' ) ) ) ) {
-			add_filter( 'woocommerce_breadcrumb_defaults', [ static::Class, 'breadcrumb' ] );
-			add_filter( 'woocommerce_add_to_cart_fragments', [ static::Class, 'header_add_to_cart_fragment' ] );
-			add_filter( "loop_shop_per_page", [ static::Class, 'pagination' ], 20 );
+			add_filter( 'woocommerce_breadcrumb_defaults', [ static::class, 'breadcrumb' ] );
+			add_filter( 'woocommerce_add_to_cart_fragments', [ static::class, 'header_add_to_cart_fragment' ] );
+			add_filter( "loop_shop_per_page", [ static::class, 'pagination' ], 20 );
 		}
 	}
 
